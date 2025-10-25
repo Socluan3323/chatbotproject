@@ -28,7 +28,7 @@ if user_input := st.chat_input("What is up?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": user_input})
     
-    response = call_llm(prompt_a.format(user_input))
+    response = call_llm(prompt_a.format(user_input = user_input, history = st.session_state.messages))
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
