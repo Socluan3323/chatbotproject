@@ -1,5 +1,6 @@
 import streamlit as st
 from call_llm import call_llm
+from prompt import prompt_a
 print("start")
 st.title("LLM app")
 # Initialize chat history
@@ -27,7 +28,7 @@ if user_input := st.chat_input("What is up?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": user_input})
     
-    response = call_llm(user_input)
+    response = call_llm(prompt_a.format(user_input))
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
