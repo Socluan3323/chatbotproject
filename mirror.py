@@ -1,6 +1,7 @@
 import streamlit as st
+from call_llm import call_llm
 print("start")
-st.title("Echo Echo")
+st.title("LLM app")
 # Initialize chat history
 if "messages" not in st.session_state:
     print("messages not found")
@@ -16,17 +17,17 @@ for message in st.session_state.messages:
         
     
 # React to user input
-if prompt := st.chat_input("What is up?"):
+if user_input := st.chat_input("What is up?"):
     print("get user input")
     
     # Display user message in chat message container
     with st.chat_message("user"):
         print("display user input")
-        
-        st.markdown(prompt)
+        st.markdown(user_input)
     # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    response = f"Echo: {prompt}"
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    
+    response = call_llm(user_input)
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)

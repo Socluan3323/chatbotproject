@@ -18,4 +18,7 @@ def call_llm(prompt: str,modelinput: str = "gemini-2.5-flash-lite") -> str:
     response = client.models.generate_content(
     model= modelinput, contents=prompt
     )
+
     return response.text
+print(call_llm("what's up"))
+
