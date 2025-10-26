@@ -5,4 +5,4 @@ with st.form(key="my_form"):
     submitted = st.form_submit_button("Submit")
     if submitted:
         st.session_state["topic"] = user_input
-        st.switch_page("pages/mirror.py")
+        st.switch_page("pages/chat.py")
