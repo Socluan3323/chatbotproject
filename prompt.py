@@ -8,7 +8,7 @@ now your turn:
 
 bot_prompt= """Bạn là {role}  với topic này: {topic}, hãy nêu quan điểm ngắn gọn tối 3 câu với {opposite_role}
 Lịch sử hội thoại trước đó:{conversation_history}
-.Tới lượt bạn:
+.Đưa ra câu trả lời của bạn:
 """
 
 
