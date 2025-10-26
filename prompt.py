@@ -7,6 +7,6 @@ now your turn:
 
 
 """
-
+prompt_agree = """you agree with the topic: {topic}. Tell your opinion for this topic."""
 
 # print(prompt_a.format(user_input="xin chao"))
