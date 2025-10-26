@@ -6,11 +6,15 @@ heres user input: {user_input}
 now your turn:
 """
 
-bot_prompt= """Bạn là {role}  với topic này: {topic}, hãy nêu quan điểm ngắn gọn tối 3 câu với {opposite_role}
-Lịch sử hội thoại trước đó:{conversation_history}
-.Đưa ra câu trả lời của bạn:
-"""
 
+bot_prompt = """Bạn là {role} trong cuộc tranh luận về chủ đề: {topic}
+
+Lịch sử hội thoại:
+{conversation_history}
+
+Nhiệm vụ: Phản hồi lại {opposite_role} bằng quan điểm của bạn trong TỐI ĐA 3 câu ngắn gọn, rõ ràng.
+
+Câu trả lời của bạn:"""
 
 
 # print(prompt_a.format(user_input="xin chao"))
