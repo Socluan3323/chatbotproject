@@ -9,6 +9,7 @@ class bot:
     def respond(self, new_conversation_history):
         """pass in new conversation history to update the conversation history"""
         self.conversation_history = new_conversation_history
+        
         response = call_llm(self.prompt)
         return response
     
@@ -31,8 +32,20 @@ class DisagreeBot(bot):
         super().__init__(conversation_history,topic)
         self.prompt = bot_prompt.format(role = Role.disagree.value, opposite_role = Role.agree.value, conversation_history = self.conversation_history, topic = self.topic )
 
+class JudgeBot(bot):
+    def __init__(self,conversation_history: str, topic:str):
+        super().__init__(conversation_history,topic)
+        self.prompt = judge_prompt.format(role_a = Role.agree.value, role_b = Role.disagree.value, conversation_history = self.conversation_history, topic = self.topic)
+    def respond(self):
+        response = call_llm(self.prompt)
+        return response
+
 if __name__ == "__main__":
     # a = AgreeBot("","working at home is better than working at the office")
     # print(a.respond())
-    b = DisagreeBot("","working at home is better than working at the office")
-    print(b.respond())
+    # b = DisagreeBot("","working at home is better than working at the office")
+    # print(b.respond(new_conversation_history= None))
+    c = JudgeBot("No conversation yet", "Working at home is better than working at the office")
+    print(c.respond())
+    
+
