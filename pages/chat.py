@@ -18,12 +18,14 @@ if 'current_round' not in st.session_state:
 if "messages" not in st.session_state:
     print("messages not found")
     st.session_state.messages = []
+if "shared" not in st.session_state:
+    st.session_state.shared = {}
 
 if "agreebot" not in st.session_state:
-    st.session_state.agreebot = AgreeBot(conversation_history = st.session_state.messages, topic= st.session_state["topic"])
+    st.session_state.agreebot = AgreeBot()
 
 if "disagreebot" not in st.session_state:
-    st.session_state.disagreebot = DisagreeBot(conversation_history = st.session_state.messages, topic= st.session_state["topic"])
+    st.session_state.disagreebot = DisagreeBot()
 # while not st.session_state.is_done:
 #     if  st.session_state.current_round > st.session_state.total_round:
 #         st.session_state.is_done = True
@@ -68,17 +70,15 @@ while not st.session_state.is_done:
     if  st.session_state.current_round > st.session_state.total_round:
         st.session_state.is_done = True
         break
-    agreebot_response = st.session_state.agreebot.respond(new_conversation_history= st.session_state.messages) 
-    st.session_state.messages.append(agreebot_response)
-    with st.chat_message(Role.agree.value, avatar="🔵"):
-        st.markdown(agreebot_response)
-    
-    disagreeabot_response = st.session_state.disagreebot.respond(new_conversation_history= st.session_state.messages)
-    st.session_state.messages.append(disagreeabot_response)
-    with st.chat_message(Role.disagree.value,avatar="🔴"):
-        st.markdown(disagreeabot_response)
-    
+    st.session_state.agreebot.run(st.session_state.shared) 
 
+    with st.chat_message(Role.agree.value, avatar="🔵"):
+            st.markdown(st.session_state.shared["agreebot_response"])
+        
+    st.session_state.disagreebot.run(st.session_state.shared)
+    with st.chat_message(Role.disagree.value,avatar="🔴"):
+        st.markdown(st.session_state.shared["disagreebot_response"])
+    
     st.session_state.current_round += 1       
 
 
