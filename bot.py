@@ -1,6 +1,7 @@
 from prompt import bot_prompt, judge_prompt
 from botrole import Role
 from call_llm import call_llm
+from theflow import Node
 class bot:
     def __init__(self, conversation_history, topic):
         self.conversation_history = conversation_history
@@ -21,16 +22,43 @@ class bot:
     #     self.build_prompt(self,topic, history)
     #     return call_llm(self.prompt)
     
-class AgreeBot(bot):
-    def __init__(self, conversation_history:str, topic: str):
-        super().__init__(conversation_history,topic)
-        self.prompt = bot_prompt.format(role = Role.agree.value, opposite_role = Role.disagree.value, conversation_history = self.conversation_history, topic = self.topic)
-    
+# class AgreeBot(bot):
+#     def __init__(self, conversation_history:str, topic: str):
+#         super().__init__(conversation_history,topic)
+#         self.prompt = bot_prompt.format(role = Role.agree.value, opposite_role = Role.disagree.value, conversation_history = self.conversation_history, topic = self.topic)
+shared = {"topic": "working at home is better than working at the office",
+          "conversation_history": "no conversation yet"}
+# class AgreeBot(Node):
+#     def prep(topic,shared):
+#         return shared["topic"],shared["conversation_history"]
+#     def exec(self,prep_res):
+#         topic,conversation_history = prep_res
+#         prompt = """Bạn là người đồng tình trong cuộc tranh luận về chủ đề: {topic}
 
-class DisagreeBot(bot):
-    def __init__(self,conversation_history: str, topic: str):
-        super().__init__(conversation_history,topic)
-        self.prompt = bot_prompt.format(role = Role.disagree.value, opposite_role = Role.agree.value, conversation_history = self.conversation_history, topic = self.topic )
+# Lịch sử hội thoại:
+# {conversation_history}
+
+# Nhiệm vụ: Phản hồi lại bằng quan điểm của bạn trong TỐI ĐA 3 câu ngắn gọn, rõ ràng.
+
+# Câu trả lời của bạn:""".format(topic = topic, conversation_history = conversation_history)
+#         return call_llm(prompt)
+#     def post(self, shared, prep_res, exec_res):
+#         agreebot_dictionary = {"agree_bot": exec_res}
+#         if isinstance(shared["conversation_history"],str):
+#             agreebot_dictionary['order'] = 1
+#         else:
+#             agreebot_dictionary['order'] = len(shared["conversation_history"]) + 1
+
+#         shared["agreebot_response"] = exec_res
+#         shared["conversation_history"] = [agreebot_dictionary]
+
+        
+
+
+# class DisagreeBot(bot):
+#     def __init__(self,conversation_history: str, topic: str):
+#         super().__init__(conversation_history,topic)
+#         self.prompt = bot_prompt.format(role = Role.disagree.value, opposite_role = Role.agree.value, conversation_history = self.conversation_history, topic = self.topic )
 
 class JudgeBot(bot):
     def __init__(self,conversation_history: str, topic:str):
