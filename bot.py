@@ -28,31 +28,55 @@ class bot:
 #         self.prompt = bot_prompt.format(role = Role.agree.value, opposite_role = Role.disagree.value, conversation_history = self.conversation_history, topic = self.topic)
 shared = {"topic": "working at home is better than working at the office",
           "conversation_history": "no conversation yet"}
-# class AgreeBot(Node):
-#     def prep(topic,shared):
-#         return shared["topic"],shared["conversation_history"]
-#     def exec(self,prep_res):
-#         topic,conversation_history = prep_res
-#         prompt = """Bạn là người đồng tình trong cuộc tranh luận về chủ đề: {topic}
+class AgreeBot(Node):
+    def prep(topic,shared):
+        return shared["topic"],shared["conversation_history"]
+    def exec(self,prep_res):
+        topic,conversation_history = prep_res
+        prompt = """Bạn là người đồng tình trong cuộc tranh luận về chủ đề: {topic}
 
-# Lịch sử hội thoại:
-# {conversation_history}
+Lịch sử hội thoại:
+{conversation_history}
 
-# Nhiệm vụ: Phản hồi lại bằng quan điểm của bạn trong TỐI ĐA 3 câu ngắn gọn, rõ ràng.
+Nhiệm vụ: Phản hồi lại bằng quan điểm của bạn trong TỐI ĐA 3 câu ngắn gọn, rõ ràng.
 
-# Câu trả lời của bạn:""".format(topic = topic, conversation_history = conversation_history)
-#         return call_llm(prompt)
-#     def post(self, shared, prep_res, exec_res):
-#         agreebot_dictionary = {"agree_bot": exec_res}
-#         if isinstance(shared["conversation_history"],str):
-#             agreebot_dictionary['order'] = 1
-#         else:
-#             agreebot_dictionary['order'] = len(shared["conversation_history"]) + 1
+Câu trả lời của bạn:""".format(topic = topic, conversation_history = conversation_history)
+        return call_llm(prompt)
+    def post(self, shared, prep_res, exec_res):
+        agreebot_dictionary = {"agree_bot": exec_res}
+        if isinstance(shared["conversation_history"],str):
+            agreebot_dictionary['order'] = 1
+            shared["conversation_history"] = []
+        else:
+            agreebot_dictionary['order'] = len(shared["conversation_history"]) + 1
 
-#         shared["agreebot_response"] = exec_res
-#         shared["conversation_history"] = [agreebot_dictionary]
+        shared["agreebot_response"] = exec_res
+        shared["conversation_history"].append(agreebot_dictionary)
 
-        
+class DisagreeBot(Node):
+    def prep(topic,shared):
+        return shared["topic"],shared["conversation_history"]
+    def exec(self,prep_res):
+        topic,conversation_history = prep_res
+        prompt = """Bạn là người không đồng tình trong cuộc tranh luận về chủ đề: {topic}
+
+Lịch sử hội thoại:
+{conversation_history}
+
+Nhiệm vụ: Phản hồi lại bằng quan điểm của bạn trong TỐI ĐA 3 câu ngắn gọn, rõ ràng.
+
+Câu trả lời của bạn:""".format(topic = topic, conversation_history = conversation_history)
+        return call_llm(prompt)
+    def post(self, shared, prep_res, exec_res):
+        disagreebot_dictionary = {"disagree_bot": exec_res}
+        if isinstance(shared["conversation_history"],str):
+            disagreebot_dictionary['order'] = 1
+            shared["conversation_history"] = []
+        else:
+            disagreebot_dictionary['order'] = len(shared["conversation_history"]) + 1
+
+        shared["disagreebot_response"] = exec_res
+        shared["conversation_history"].append(disagreebot_dictionary)
 
 
 # class DisagreeBot(bot):
